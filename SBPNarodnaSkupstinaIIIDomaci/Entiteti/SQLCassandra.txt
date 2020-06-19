@@ -1,0 +1,111 @@
+CREATE TABLE "ZdravstvenaUstanova" (
+		"ZuID" text, 
+		naziv text, 
+		telefon text, 
+		adresa text, 
+		grad text, 
+		drzava text,
+		PRIMARY KEY("ZuID")
+)
+WITH
+  bloom_filter_fp_chance=0.01
+  AND compaction={ 'class' : 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy' }
+  AND compression={ 'sstable_compression' : 'org.apache.cassandra.io.compress.LZ4Compressor' };
+  
+CREATE TABLE "Lekar" (
+		"JMBG" text, 
+		ime text, 
+		prezime text, 
+		adresa text, 
+		specijalizacija text, 
+		"IDzdravstveneUstanove" text,
+		"IDodeljenja" text, 
+		PRIMARY KEY("JMBG")
+)
+WITH
+  bloom_filter_fp_chance=0.01
+  AND compaction={ 'class' : 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy' }
+  AND compression={ 'sstable_compression' : 'org.apache.cassandra.io.compress.LZ4Compressor' };
+  
+CREATE TABLE "Osoblje" (
+		"JMBG" text,
+		"IDzdravstveneUstanove" text, 
+		ime text, 
+		prezime text, 
+		adresa text, 
+		"IDodeljenja" text, 
+		PRIMARY KEY("JMBG")
+)
+WITH
+  bloom_filter_fp_chance=0.01
+  AND compaction={ 'class' : 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy' }
+  AND compression={ 'sstable_compression' : 'org.apache.cassandra.io.compress.LZ4Compressor' };
+  
+CREATE TABLE "Pacijent" (
+		"JMBG" text, 
+		ime text, 
+		prezime text, 
+		"IDizabranogLekara" text, 
+		PRIMARY KEY("JMBG")
+)
+WITH
+  bloom_filter_fp_chance=0.01
+  AND compaction={ 'class' : 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy' }
+  AND compression={ 'sstable_compression' : 'org.apache.cassandra.io.compress.LZ4Compressor' };
+  
+CREATE TABLE "Karton" (
+		"IDkartona" text, 
+		"IDpacijenta" text, 
+		"IDizabranogLekara" text, 
+		PRIMARY KEY("IDkartona")
+)
+WITH
+  bloom_filter_fp_chance=0.01
+  AND compaction={ 'class' : 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy' }
+  AND compression={ 'sstable_compression' : 'org.apache.cassandra.io.compress.LZ4Compressor' };
+  
+CREATE TABLE "Pregled" (
+		"IDpregleda" text, 
+		"IDkartona" text, 
+		"IDlekara" text, 
+		datumVreme text, 
+		PRIMARY KEY("IDpregleda")
+)
+WITH
+  bloom_filter_fp_chance=0.01
+  AND compaction={ 'class' : 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy' }
+  AND compression={ 'sstable_compression' : 'org.apache.cassandra.io.compress.LZ4Compressor' };
+  
+CREATE TABLE "Pregled" (
+		"IDuputa" text, 
+		"IDkartona" text, 
+		"IDzakazanogLekara" text, 
+		"IDizabranogLekara" text, 
+		datumVreme text, 
+		PRIMARY KEY("IDuputa")
+)
+WITH
+  bloom_filter_fp_chance=0.01
+  AND compaction={ 'class' : 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy' }
+  AND compression={ 'sstable_compression' : 'org.apache.cassandra.io.compress.LZ4Compressor' };
+  
+CREATE TABLE "Terapija" (
+		"IDpregledaOrUputa" text,  
+		"IDlekara" text, 
+		terapijaOrDijagnoza text, 
+		PRIMARY KEY("IDpregledaOrUputa")
+)
+WITH
+  bloom_filter_fp_chance=0.01
+  AND compaction={ 'class' : 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy' }
+  AND compression={ 'sstable_compression' : 'org.apache.cassandra.io.compress.LZ4Compressor' }; 
+  
+CREATE TABLE "Odeljenje" (
+		"IDodeljenja" text, 
+		naziv text,  
+		PRIMARY KEY("IDodeljenja")
+)
+WITH
+  bloom_filter_fp_chance=0.01
+  AND compaction={ 'class' : 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy' }
+  AND compression={ 'sstable_compression' : 'org.apache.cassandra.io.compress.LZ4Compressor' }; 
